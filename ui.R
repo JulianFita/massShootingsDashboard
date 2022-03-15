@@ -1,0 +1,58 @@
+header <- dashboardHeader(title = 'Mass Shootings')
+
+sideBar <- dashboardSidebar(sidebarMenu(menuItem('Description',
+                                                 tabName = 'info',
+                                                 icon = icon('info')),
+                                        menuItem('Charts',
+                                                 tabName = 'charts',
+                                                 icon = icon('chart-line')),
+                                        menuItem('Contact',
+                                                 tabName = 'contact',
+                                                 icon = icon('address-card'),
+                                                 menuSubItem('LinkedIn',
+                                                             icon = icon('linkedin'),
+                                                             href = 'https://www.linkedin.com/in/julian-gabriel-fita-924b16199/'),
+                                                 menuSubItem('JulianGrabrielFita@gmail.com',
+                                                             icon = icon('envelope')),
+                                                 menuSubItem('Code',
+                                                             icon = icon('github'),
+                                                             href = 'https://github.com/JulianFita'),
+                                                 menuSubItem('Data Source',
+                                                             icon = icon('kaggle'),
+                                                             href = 'https://www.kaggle.com/hemil26/mass-shootings-in-united-states-20182022'))))
+                                          
+                                          
+
+body <- dashboardBody(tabItems(tabItem(tabName = 'charts',
+                                       fluidPage(valueBoxOutput('totals'),
+                                                 valueBoxOutput('dead'),
+                                                 valueBoxOutput('injured')),
+                                       fluidPage(column(width = 4,
+                                                        offset = 4,
+                                                        selectInput('year',
+                                                                    label = 'Year',
+                                                                    choices = unique(years),
+                                                                    selected = 2018,
+                                                                    width = "100%"))),
+                                       box(title = "USA-States Map",
+                                           status = "primary",
+                                           solidHeader = TRUE,
+                                           collapsible = TRUE,
+                                           highchartOutput('mapPlot')),
+                                       box(title = 'Mass shootings in every state over time',
+                                           status = "primary",
+                                           solidHeader = TRUE,
+                                           collapsible = TRUE,
+                                           highchartOutput('linePlot'))),
+                               tabItem(tabName = 'info',
+                                       column(width = 6,
+                                              h1('Context', style = 'font-family: Verdana'),
+                                              htmlOutput('descriptionText', style = 'font-family: Verdana')),
+                                       column(width = 6,
+                                              h1('Summary', style = 'font-family: Verdana'),
+                                              htmlOutput('summaryText', style = 'font-family: Verdana')))))
+                                
+
+ui <- dashboardPage(header,
+                    sideBar,
+                    body)
